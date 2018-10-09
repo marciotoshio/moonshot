@@ -37,6 +37,17 @@ class Moonshot::BuildMechanism::VersionProxy
     active(version).post_build_hook(version)
   end
 
+  def build_cli_hook(parser)
+    # Expose any command line arguments provided by the build mechanisms. We
+    # don't know the version at this point, so we can't call the hook on only
+    # the one we're going to use, which may result in options being exposed that
+    # are only applicable for one of the build mechanisms.
+    parser = @release.build_cli_hook(parser) if @release.respond_to?(:build_cli_hook)
+    parser = @dev.build_cli_hook(parser) if @dev.respond_to?(:build_cli_hook)
+
+    parser
+  end
+
   private
 
   def active(version)
