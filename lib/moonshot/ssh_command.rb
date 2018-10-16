@@ -26,6 +26,11 @@ module Moonshot
                 'The logical ID of the ASG to SSH into, required for multiple stacks') do |v|
         Moonshot.config.ssh_auto_scaling_group_name = v
       end
+
+      parser.on('-o', '--disable-strict-hostkey-check', TrueClass,
+                'Disable the strict hostkey check') do |v|
+        Moonshot.config.ssh_disable_strict_hostkey_check = v
+      end
     end
   end
 end
