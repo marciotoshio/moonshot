@@ -10,10 +10,11 @@ module Moonshot
       @instance_id = instance_id
     end
 
-    def build(command = nil)
+    def build(command = nil, disable_strict_hostkey_check = false)
       cmd = ['ssh', '-t']
       cmd << "-i #{@config.ssh_identity_file}" if @config.ssh_identity_file
       cmd << "-l #{@config.ssh_user}" if @config.ssh_user
+      cmd << '-oStrictHostKeyChecking=no' if disable_strict_hostkey_check
       cmd << instance_ip
       cmd << Shellwords.escape(command) if command
       Result.new(cmd.join(' '), instance_ip)

@@ -178,7 +178,8 @@ module Moonshot
       @config.ssh_instance ||= SSHTargetSelector.new(
         stack, asg_name: @config.ssh_auto_scaling_group_name).choose!
       cb = SSHCommandBuilder.new(@config.ssh_config, @config.ssh_instance)
-      result = cb.build(@config.ssh_command)
+      result = cb.build(@config.ssh_command,
+                        @config.ssh_disable_strict_hostkey_check)
 
       warn "Opening SSH connection to #{@config.ssh_instance} (#{result.ip})..."
       exec(result.cmd)
