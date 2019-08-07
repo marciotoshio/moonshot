@@ -189,15 +189,15 @@ module Moonshot # rubocop:disable ModuleLength
         expect { subject.send(:check_ci_status, sha) }.to raise_error(Shell::CommandError)
       end
     end
-    
+
     describe '#validate_commit' do
       let(:skip_ci) { false }
-      subject { 
+      subject {
         s = described_class.new(build_mechanism, skip_ci_status: skip_ci);
         s.resources = resources
         s
       }
-      
+
       it 'calls check_ci_status' do
         expect(subject).to receive(:check_ci_status)
         subject.send(:validate_commit)
@@ -206,8 +206,30 @@ module Moonshot # rubocop:disable ModuleLength
       context 'when skip_ci_status is true' do
         let(:skip_ci) { true }
         it 'does not call check_ci_status' do
-          expect(subject).not_to receive(:check_ci_status)           
+          expect(subject).not_to receive(:check_ci_status)
           subject.send(:validate_commit)
+        end
+      end
+    end
+
+    describe '#confirm_or_fail' do
+      context 'when interactive option is true' do
+        before { Moonshot.config.interactive = true }
+
+        it 'ask for confirmation' do
+          expect(subject).to receive(:yes?).and_return(true)
+
+          subject.send(:confirm_or_fail, 'test')
+        end
+      end
+
+      context 'when interactive option is false' do
+        before { Moonshot.config.interactive = false }
+
+        it 'not ask for confirmation' do
+          expect(subject).not_to receive(:yes?)
+
+          subject.send(:confirm_or_fail, 'test')
         end
       end
     end

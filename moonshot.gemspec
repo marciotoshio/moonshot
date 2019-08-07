@@ -38,5 +38,6 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency('rspec')
   s.add_development_dependency('simplecov')
-  s.add_development_dependency('fakefs')
+  # fakefs requires < 0.14.0 for ruby 2.2
+  s.add_development_dependency('fakefs', '< 0.14.0')
 end

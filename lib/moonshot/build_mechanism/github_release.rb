@@ -85,6 +85,8 @@ module Moonshot::BuildMechanism
       say("Changelog for #{version}", :yellow)
       say("#{@changes}\n\n")
 
+      return unless Moonshot.config.interactive
+
       q = "Do you want to tag and release this commit as #{version}? [y/n]"
       raise 'Release declined.' unless yes?(q)
     end
