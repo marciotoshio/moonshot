@@ -16,6 +16,7 @@ module Moonshot
       # Moonshot hooks to trigger this plugin.
       alias setup_create run_hook
       alias setup_update run_hook
+      alias setup_delete run_hook
     end
   end
 end
